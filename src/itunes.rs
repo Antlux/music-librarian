@@ -19,9 +19,7 @@ impl Display for Error {
     }
 }
 
-impl std::error::Error for Error {
-    
-}
+impl std::error::Error for Error {}
 
 
 pub struct Library {
