@@ -75,10 +75,10 @@ pub struct Track {
 
 impl Track {
     fn from_element_data(data: HashMap<String, &Element>) -> Result<Self, Error> {
-        let name = data.get("Name".into()).and_then(|o| Some(o.text())).expect("Cannot find track name.").into();
-        let artist = data.get("Artist".into()).and_then(|o| Some(o.text())).expect("Cannot find track artist.").into();
-        let id = data.get("Track ID".into()).and_then(|o| Some(o.text())).and_then(|o| o.parse::<usize>().ok()).expect("Cannot find track id");
-        let persistent_id = data.get("Persistent ID".into()).and_then(|o| Some(o.text())).expect("Cannot find track artist.").into();
+        let name = data.get("Name").and_then(|o| Some(o.text())).expect("Cannot find track name.").to_owned();
+        let artist = data.get("Artist").and_then(|o| Some(o.text())).expect("Cannot find track artist.").to_owned();
+        let id = data.get("Track ID").and_then(|o| Some(o.text())).and_then(|o| o.parse::<usize>().ok()).expect("Cannot find track id");
+        let persistent_id = data.get("Persistent ID").and_then(|o| Some(o.text())).expect("Cannot find track artist.").to_owned();
         Ok(Self { name, artist, id, persistent_id})
     }
 
@@ -122,9 +122,9 @@ pub struct Playlist {
 
 impl Playlist {
     fn from_element_data<'a>(data: HashMap<String, &Element>) -> Result<Self, Error> {
-        let name = data.get("Name".into()).and_then(|o| Some(o.text())).ok_or(Error::XMLLibraryError("Could not find playlist name".into()))?.to_owned();
-        let description = data.get("Description".into()).and_then(|o| Some(o.text())).ok_or(Error::XMLLibraryError("Could not find playlist description".into()))?.to_owned();
-        let track_ids = data.get("Playlist Items".into())
+        let name = data.get("Name").and_then(|o| Some(o.text())).ok_or(Error::XMLLibraryError("Could not find playlist name".into()))?.to_owned();
+        let description = data.get("Description").and_then(|o| Some(o.text())).ok_or(Error::XMLLibraryError("Could not find playlist description".into()))?.to_owned();
+        let track_ids = data.get("Playlist Items")
             .and_then(|e| Some(e.children()))
             .ok_or(Error::XMLLibraryError("Could not find playlist tracks".into()))?
             .filter_map(|e| e.children().find_map(|e| e.text().parse::<usize>().ok()))
