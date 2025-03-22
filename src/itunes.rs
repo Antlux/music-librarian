@@ -63,7 +63,7 @@ impl Library {
     pub fn playlists(&self) -> &Vec<Playlist> {&self.playlists}
 }
 
-#[derive(Eq, Hash, Debug)]
+#[derive(Eq, Hash, Debug, Clone)]
 pub struct Track {
     name: String,
     artist: String,
